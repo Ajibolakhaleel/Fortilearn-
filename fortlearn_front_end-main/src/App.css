@@ -1,0 +1,96 @@
+@import '/node_modules/bootstrap/dist/css/bootstrap.css';
+
+
+
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+  .btn-teal {
+    background-color: #00BFA5;
+    color: white;
+  }
+  .btn-teal:hover {
+    background-color: #00A896;
+    color: white;
+  }
+  .resource-card {
+    transition: transform 0.3s;
+    height: 100%;
+  }
+  .resource-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+  .badge-beginner {
+    background-color: #4CAF50;
+    color: white;
+  }
+  .badge-advanced {
+    background-color: #2196F3;
+    color: white;
+  }
+  .badge-intermediate {
+    background-color: #FF9800;
+    color: white;
+  }
+  .bookmark-icon {
+    color: #6c757d;
+    cursor: pointer;
+  }
+  .bookmark-icon:hover {
+    color: #0d6efd;
+  }
+  .footer-links a {
+    color: #6c757d;
+    text-decoration: none;
+    margin-right: 15px;
+  }
+  .footer-links a:hover {
+    color: #0d6efd;
+  }
+  .social-icon {
+    color: #6c757d;
+    margin-right: 15px;
+    font-size: 1.2rem;
+  }
+  .social-icon:hover {
+    color: #0d6efd;
+  }
