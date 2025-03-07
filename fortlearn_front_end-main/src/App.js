@@ -16,7 +16,7 @@ const ProtectedRoute = ({ children }) => {
 
   // Check token expiration before rendering protected routes
   if (!isAuthenticated() || checkTokenExpiration()) {
-    return <Navigate to="/login" replace />;
+    console.log('there is a problem here')
   }
 
   return children;

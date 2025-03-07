@@ -9,7 +9,7 @@ function Navbar() {
     <div class="container">
         <a class="navbar-brand d-flex align-items-center" href="/">
             <i class="fas fa-shield-alt text-primary me-2"></i>
-            <span class="fw-bold text-primary">CyberHub</span>
+            <span class="fw-bold text-primary">FortiLearn</span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
@@ -26,9 +26,9 @@ function Navbar() {
                 <li class="nav-item">
                 <Link to="/user-profile" class="nav-link">Profile</Link> 
                 </li>
-                <li class="nav-item">
+                {/* <li class="nav-item">
                 <Link to="/portal" class="nav-link">Portal</Link> 
-                </li>
+                </li> */}
                 <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
                 <Link to="/login" class="nav-link">Login</Link> 
                 </li>

@@ -24,22 +24,27 @@ const LoginForm = () => {
             password,
           }),
     })
-    .then((res) => res.json())
+    .then(res => res.json())
     .then((response) =>{
+      console.log('token on login',response.token)
       const token  = response.token
-      console.log('response after login', response)
-      if(token){
-        if(rememberMe){
-            localStorage.setItem('authToken', token);
-            return navigate('/user-profile')
-        }else{
-            sessionStorage.setItem('authToken',token);
-            return navigate('/user-profile')
-        }
-    }
+      localStorage.setItem('authToken', token);
+      navigate('/user-profile')
+
+
+
+    //   if(token){
+    //     if(rememberMe){
+    //         localStorage.setItem('authToken', token);
+    //         navigate('/user-profile')
+    //     }else{
+    //         sessionStorage.setItem('authToken',token);
+    //         navigate('/user-profile')
+    //     }
+    // }
     })
     }catch(err){
-      console.log('login error')
+      console.log('login error', err)
       return err
     }
 

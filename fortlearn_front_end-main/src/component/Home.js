@@ -82,7 +82,8 @@ function HomePage() {
           <div className="row">
             {/* Resource Card 1 */}
             {resources.map(resource => (
-            <div className="col-md-4 mb-4">
+            <div className="col-md-4 mb-4"  onClick={() => window.open(resource.resourceLink || '#', '_blank')}
+            style={{ cursor: 'pointer' }} >
               <div className="card h-100 border-0 shadow-sm">
                 <div className="card-body p-4">
                   <div className="d-flex align-items-center mb-3">

@@ -1,18 +1,54 @@
 import React, { useState } from 'react';
-import {  Link  } from 'react-router-dom';
+import {  Link, useNavigate  } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const RegisterForm = () => {
   const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
+  const [specialization, setSpecialization] = useState('');
+  const navigate = useNavigate()
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Login submitted:', { email, password, rememberMe });
-    // Add your authentication logic here
+    console.log('Registration submitted:', { 
+      email, 
+      username, 
+      password, 
+      specialization 
+    });
+
+    e.preventDefault();
+    try {
+      fetch('http://localhost:3000/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            email,
+            password,
+            username,
+            specialization
+          }),
+    })
+    .then(res => res.json())
+    .then((response) =>{
+      const token  = response.token
+      localStorage.setItem('authToken', token);
+      navigate('/user-profile')
+    })
+    }catch(err){
+      console.log('login error', err)
+      return err
+    }
+
+    // Add your authentication/registration logic here
   };
+
+
 
   return (
     <div className="container d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
@@ -41,8 +77,8 @@ const RegisterForm = () => {
                 className="form-control"
                 id="email"
                 placeholder="Enter your Username"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
               />
             </div>
@@ -65,7 +101,7 @@ const RegisterForm = () => {
             <div className="mb-3">
             <label className="form-check-label small" htmlFor="rememberMe">Select your specialization</label>
 
-            <select className="form-select">
+            <select className="form-select"   value={specialization} onChange={(e) => setSpecialization(e.target.value)}>
                             <option value="">Select Specialization</option>
                             <option value="network-security">Network Security</option>
                             <option value="penetration-testing">Penetration Testing</option>
@@ -77,20 +113,6 @@ const RegisterForm = () => {
             <div className="d-grid mb-3">
               <button type="submit" className="btn btn-success">Sign Up</button>
             </div>
-            
-            
-            {/* <div className="row mb-3 gx-2">
-              <div className="col">
-                <button type="button" className="btn btn-outline-secondary w-100">
-                  <i className="bi bi-google me-2"></i>Google
-                </button>
-              </div>
-              <div className="col">
-                <button type="button" className="btn btn-outline-secondary w-100">
-                  <i className="bi bi-linkedin me-2"></i>LinkedIn
-                </button>
-              </div>
-            </div> */}
             
             <div className="text-center small">
               Have an account? <Link to="/login" class="nav-link"><small>Sign in now</small></Link> 

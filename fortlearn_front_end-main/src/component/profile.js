@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ResourceSpecializationModal from './resourceModal';
+import { useNavigate } from 'react-router-dom';
+import {  Link  } from 'react-router-dom';
+
+
 
 const FortiLearnProfilePage = () => {
   const [userdata, setUserData] = useState({
@@ -9,26 +13,32 @@ const FortiLearnProfilePage = () => {
     specialisation: ''
   });
   const [resources, setResources] = useState([]);
+  const navigate = useNavigate()
+
 
   useEffect(() => {
     const fetchUserProfile = async () => {
+    const token = localStorage.getItem('authToken');
+    if(token){
       try {
-        const token = localStorage.getItem('authToken');
-        const response = await fetch('http://localhost:3000/userResources/get', {
+        await fetch('http://localhost:3000/userResources/get', {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
           }
-        });
-        const data = await response.json();
-        setUserData(data.user);
-        
-        if (data.resources) {
-          setResources(data.resources);
-        }
+        }).then(res => res.json())
+        .then((res) =>{
+          setUserData(res.user)
+          setResources(res.user.specificRes)
+        })
       } catch (err) {
         console.error('Error fetching user profile:', err);
       }
+    }else {
+      navigate("/login")
+    }
+
+    
     };
 
     fetchUserProfile();
@@ -41,7 +51,7 @@ const FortiLearnProfilePage = () => {
         <div className="container-fluid d-flex justify-content-between align-items-center">
           <div className="d-flex align-items-center">
             <i className="bi bi-shield-lock-fill text-primary me-2"></i>
-            <span className="fw-bold">FortiLearn</span>
+            <Link to="/" class="nav-link">FortiLearn</Link> 
           </div>
           <div>
             <i className="bi bi-bell me-3"></i>
@@ -130,23 +140,25 @@ const FortiLearnProfilePage = () => {
             </div>
             <div className="row">
               {resources.map((resource, index) => (
-                <div key={index} className="col-md-4 mb-4">
+           
+                <div   key={index} 
+                className="col-md-4 mb-4"
+                onClick={() => window.open(resource.resource.resourceLink || '#', '_blank')}
+                style={{ cursor: 'pointer' }} >
                   <div className="card h-100 border-0 shadow-sm">
                     <div className="card-body p-4">
                       <div className="d-flex align-items-center mb-3">
                         <small className="text-muted">Tutorial</small>
                       </div>
-                      <h5 className="card-title fw-bold">{resource.name || 'Ethical Hacking Guide'}</h5>
+                      <h5 className="card-title fw-bold">{resource.resource.title || 'Ethical Hacking Guide'}</h5>
                       <p className="card-text">
-                        {resource.description || 'Comprehensive guide to ethical hacking and penetration testing.'}
+                        {resource.resource.description || 'Comprehensive guide to ethical hacking and penetration testing.'}
                       </p>
                       <div className="d-flex align-items-center justify-content-between mt-3">
                         <span className="badge bg-warning text-dark">
-                          {resource.level || 'Intermediate'}
+                          {resource.resource.level || 'Intermediate'}
                         </span>
-                        <button className="btn btn-outline-primary btn-sm border-0">
-                          {/* Bookmark functionality */}
-                        </button>
+                    
                       </div>
                     </div>
                   </div>

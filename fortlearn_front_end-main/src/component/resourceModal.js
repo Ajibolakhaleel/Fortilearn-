@@ -55,34 +55,23 @@ const ResourceSpecializationModal = ({ trigger, onSave }) => {
 
   // Save selected resources
   const handleSave = async () => {
+    console.log('selected resources', selectedResources)
     try {
         const token = localStorage.getItem('authToken');
 
-      const response = await fetch('http://localhost:3000/userResources/assignResource', {
+      await fetch('http://localhost:3000/userResources/assignResource', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ resources: selectedResources })
-      });
-  
-      const data = await response.json();
-  
-      if (data.assignedResources.length > 0) {
-        // Successfully added resources
-        onSave(data.assignedResources);
-      }
-  
-      if (data.failedResources.length > 0) {
-        // Show which resources were not added
-        const failedResourceNames = data.failedResources
-          .map(failed => failed.reason)
-          .join(', ');
-        
-        // Optional: show a toast or alert about failed resources
-        alert(`please add new resources`);
-      }
+      })
+      .then(res => res.json())
+      .then((res) =>{
+        console.log(res)
+      })
+    
     } catch (error) {
       console.error('Error saving resources:', error);
     }
