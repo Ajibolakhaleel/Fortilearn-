@@ -37,8 +37,14 @@ const RegisterForm = () => {
     .then(res => res.json())
     .then((response) =>{
       const token  = response.token
-      localStorage.setItem('authToken', token);
-      navigate('/user-profile')
+      console.log('token on login',response.token)
+      if(token){
+        localStorage.setItem('authToken', token);
+        navigate('/user-profile')
+
+      }else {
+        return navigate('/login')
+      }
     })
     }catch(err){
       console.log('login error', err)

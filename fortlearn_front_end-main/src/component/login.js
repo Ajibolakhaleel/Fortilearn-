@@ -28,20 +28,12 @@ const LoginForm = () => {
     .then((response) =>{
       console.log('token on login',response.token)
       const token  = response.token
-      localStorage.setItem('authToken', token);
-      navigate('/user-profile')
-
-
-
-    //   if(token){
-    //     if(rememberMe){
-    //         localStorage.setItem('authToken', token);
-    //         navigate('/user-profile')
-    //     }else{
-    //         sessionStorage.setItem('authToken',token);
-    //         navigate('/user-profile')
-    //     }
-    // }
+      if(token){
+        localStorage.setItem('authToken', token);
+        navigate('/user-profile')
+      } else {
+        console.log(response)
+      }
     })
     }catch(err){
       console.log('login error', err)
