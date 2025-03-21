@@ -60,21 +60,51 @@ router.get('/get',async (req,res) => {
 
 
 router.post('/assignResource', auth, async (req, res) => {
+    
     try {
-
         // Validate input
+        console.log('this is the items sent to the user', req.body)
+        const token= req.headers.authorization;
+
+        if(!token){
+            return res.status(500).json({message: 'Login required'});
+        }
+        //token debugging
+        console.log("Received Token:", token);  // Debugging step
+
+        // Ensure token is in correct format
+        const tokenParts = token.split(' ');
+        if (tokenParts.length !== 2 || tokenParts[0] !== "Bearer") {
+            return res.status(400).json({ message: 'Invalid token format' });
+        }
+
+        // Extract only the actual JWT token
+        const actualToken = tokenParts[1];
+
+
+         // Verify token
+        const decoded = jwt.verify(actualToken, process.env.JWT_SECRET);
+
+
+        const user = await User.findById(decoded.id);
+        console.log('this is the user', user)
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+
         if (!req.body.resources || !Array.isArray(req.body.resources)) {
             return res.status(400).json({ message: 'Resources array is required' });
         }
 
-        const user = req.user;
+     
         const assignedResources = [];
         const failedResources = [];
 
         // Get existing resource IDs to avoid duplicates
-        // const existingResourceIds = user.specificRes.map(item => 
-        //     item.resource.toString()
-        // );
+        const existingResourceIds = user.specificRes.map(item => 
+            item.resource.toString()
+        );
 
         // Process each resource
         for (const resourceData of req.body.resources) {
@@ -112,6 +142,7 @@ router.post('/assignResource', auth, async (req, res) => {
 
                 // Assign resource to user's specificRes array
                 user.specificRes.push({ resource });
+              
                 assignedResources.push(resource);
 
                 // Add to existing resource IDs to prevent further duplicates
