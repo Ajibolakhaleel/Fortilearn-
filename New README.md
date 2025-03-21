@@ -31,7 +31,6 @@ Start the development server:
 npm run dev
 
 Video Demo
-https://www.youtube.com/watch?v=z73jBS58_64
 
 
 4. Link to deployed prototype
@@ -41,4 +40,3 @@ https://www.youtube.com/watch?v=z73jBS58_64
 For an in-depth analysis of the MVP, including achievements, challenges, and future improvements, refer to this
 
 https://docs.google.com/document/d/1Oj3bVbuGMYqiQmlyqPXbE0rCECEMR1EG2DU0zEVYHHY/edit?tab=t.0
-
