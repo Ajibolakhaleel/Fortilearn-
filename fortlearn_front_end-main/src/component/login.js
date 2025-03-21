@@ -26,11 +26,15 @@ const LoginForm = () => {
     })
     .then(res => res.json())
     .then((response) =>{
-      console.log('token on login',response.token)
       const token  = response.token
       if(token){
         localStorage.setItem('authToken', token);
-        navigate('/user-profile')
+        const user = response.user;
+        if(user.email.includes('@fortlearn')){
+          navigate('/admin')
+        } else {
+          navigate('/user-profile')
+        }
       } else {
         console.log(response)
       }

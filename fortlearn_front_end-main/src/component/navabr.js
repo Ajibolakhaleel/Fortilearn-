@@ -23,9 +23,9 @@ function Navbar() {
                 <li class="nav-item"> 
                 <Link to="/resources" class="nav-link">Resources</Link> 
                 </li>
-                <li class="nav-item">
+                {/* <li class="nav-item">
                 <Link to="/user-profile" class="nav-link">Profile</Link> 
-                </li>
+                </li> */}
                 {/* <li class="nav-item">
                 <Link to="/portal" class="nav-link">Portal</Link> 
                 </li> */}
@@ -35,6 +35,9 @@ function Navbar() {
                 <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
                 <Link to="/register" class="nav-link">Register</Link> 
                 </li>
+                {/* <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+                <Link to="/admin" class="nav-link">Portal</Link> 
+                </li> */}
             </ul>
         </div> 
      

@@ -7,7 +7,7 @@ const RegisterForm = () => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [specialization, setSpecialization] = useState('');
+  const [specialisation, setSpecialization] = useState('');
   const navigate = useNavigate()
 
 
@@ -17,9 +17,8 @@ const RegisterForm = () => {
       email, 
       username, 
       password, 
-      specialization 
+      specialisation 
     });
-
     e.preventDefault();
     try {
       fetch('http://localhost:3000/auth/register', {
@@ -31,19 +30,19 @@ const RegisterForm = () => {
             email,
             password,
             username,
-            specialization
+            specialisation
           }),
     })
     .then(res => res.json())
     .then((response) =>{
       const token  = response.token
-      console.log('token on login',response.token)
+      console.log('token on register', token)
       if(token){
         localStorage.setItem('authToken', token);
-        navigate('/user-profile')
+        navigate('/login')
 
       }else {
-        return navigate('/login')
+        console.log('not loog')
       }
     })
     }catch(err){
@@ -107,7 +106,7 @@ const RegisterForm = () => {
             <div className="mb-3">
             <label className="form-check-label small" htmlFor="rememberMe">Select your specialization</label>
 
-            <select className="form-select"   value={specialization} onChange={(e) => setSpecialization(e.target.value)}>
+            <select className="form-select"   value={specialisation} onChange={(e) => setSpecialization(e.target.value)}>
                             <option value="">Select Specialization</option>
                             <option value="network-security">Network Security</option>
                             <option value="penetration-testing">Penetration Testing</option>
