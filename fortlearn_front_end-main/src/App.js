@@ -11,6 +11,8 @@ import LoginForm from './component/login';
 import RegisterForm from './component/register';
 import AdminPortal from './component/admin_portal';
 import { useState, useEffect } from 'react';
+import ResourceDetailsPage from './component/enrollment';
+import TermsPage from './component/term_and_conditions';
 
 // ChatBot Component
 const ChatBot = () => {
@@ -44,7 +46,7 @@ const ChatBot = () => {
         ...newMessages,
         { 
           sender: 'bot', 
-          text: 'These are the   cybersecurity tracks that we offer GRC ,Blue Teaming and Red Teaming .' 
+          text: 'Thanks for your message! Our team will get back to you soon.' 
         }
       ]);
     }, 1000);
@@ -210,6 +212,8 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/resources" element={<Resourcespage />} />
+            <Route path="/terms" element={<TermsPage />} />
+
             
             {/* Protected Routes */}
             <Route
@@ -220,6 +224,7 @@ function App() {
                 </ProtectedRoute>
               }
              />
+             <Route path="/resource/:resourceId" element={<ResourceDetailsPage />} />
              <Route
                path="/admin"
                element={

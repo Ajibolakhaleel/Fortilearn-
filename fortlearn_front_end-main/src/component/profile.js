@@ -29,7 +29,8 @@ const FortiLearnProfilePage = () => {
         }).then(res => res.json())
         .then((res) =>{
           setUserData(res.user)
-          setResources(res.user.specificRes)
+          console.log("user data enrolled resources", res.user.enrolledResources)
+          setResources(res.user.enrolledResources)
         })
       } catch (err) {
         console.error('Error fetching user profile:', err);
@@ -126,7 +127,7 @@ const FortiLearnProfilePage = () => {
         <div className="card mb-4">
           <div className="card-body">
             <div className="d-flex justify-content-between align-items-center mb-3">
-              <h6 className="mb-0">My Specialization</h6>
+              <h4 className="mb-0" style={{color:'green'}}>Enrolled Resources</h4>
               <ResourceSpecializationModal 
                 trigger={
                   <button className="btn btn-success btn-sm d-flex align-items-center">
@@ -143,20 +144,20 @@ const FortiLearnProfilePage = () => {
            
                 <div   key={index} 
                 className="col-md-4 mb-4"
-                onClick={() => window.open(resource.resource.resourceLink || '#', '_blank')}
+                onClick={() => window.open(resource.resourceLink || '#', '_blank')}
                 style={{ cursor: 'pointer' }} >
                   <div className="card h-100 border-0 shadow-sm">
                     <div className="card-body p-4">
                       <div className="d-flex align-items-center mb-3">
                         <small className="text-muted">Tutorial</small>
                       </div>
-                      <h5 className="card-title fw-bold">{resource.resource.title || 'Ethical Hacking Guide'}</h5>
+                      <h5 className="card-title fw-bold">{resource.title || 'Ethical Hacking Guide'}</h5>
                       <p className="card-text">
-                        {resource.resource.description || 'Comprehensive guide to ethical hacking and penetration testing.'}
+                        {resource.description || 'Comprehensive guide to ethical hacking and penetration testing.'}
                       </p>
                       <div className="d-flex align-items-center justify-content-between mt-3">
                         <span className="badge bg-warning text-dark">
-                          {resource.resource.level || 'Intermediate'}
+                          {resource.level || 'Intermediate'}
                         </span>
                     
                       </div>

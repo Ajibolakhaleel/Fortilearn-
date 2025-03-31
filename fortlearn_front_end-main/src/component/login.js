@@ -93,7 +93,11 @@ const LoginForm = () => {
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
               />
-              <label className="form-check-label small" htmlFor="rememberMe">Remember me</label>
+              <label className="form-check-label small px-2" htmlFor="rememberMe">Agree to terms and conditions </label>
+              <Link to="/terms" className="text-blue-500 hover:underline">
+        Terms and Conditions
+         </Link>
+              <a href="terms.md" className="text-decoration-none small text-primary">Read more</a>
             </div>
             
             <div className="d-grid mb-3">
