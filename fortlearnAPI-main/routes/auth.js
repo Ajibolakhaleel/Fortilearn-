@@ -19,11 +19,6 @@ router.post('/register', async (req, res) =>{
     try{
     const {username, email, password, specialisation } = req.body;
     // check if the user exist
-
-    console.log("username:", username);
-    console.log("email:", email);
-    console.log("password's length:", password);
-    console.log("specialisation:", specialisation);
     const existingUser = await User.findOne({email})
     if(existingUser){
         return res.json({message: "user already exist"})
@@ -40,7 +35,6 @@ router.post('/register', async (req, res) =>{
     res.status(200).json({message: 'user registered successfully', token: token, newUser:newUser});
     
     } catch (error){
-        console.error("Register Error:", error); // Debugging
         return res.status(500).json(error);
     }
 })
@@ -92,7 +86,47 @@ router.post('/login', async (req, res) => {
     }
 });
 
+// get user enrolled courses
+router.get('/courses', async (req, res) =>{
+    try {
+        let results = await User.find({}).populate('specificRes');
+        return res.status(200).send({result: results})
+    }catch(err){
+        console.log(err)
+        return res.status(500).json({message:'error fetching data'})
+    }
+})
 
+// update user enrolled courses
+router.put('/courses', async (req, res) => {
+    try {
+        const { userId, course } = req.body;
 
+        // Find the user by ID
+        let user = await User.findById(userId);
+
+        // Check if user is not found
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Check if the user is already enrolled in the course
+        const isEnrolled = user.specificRes.includes(course._id);
+
+        if (isEnrolled) {
+            return res.status(400).json({ message: 'User is already enrolled in this course' });
+        }
+
+        // If not enrolled, add the course
+        user.specificRes.push(courseId);
+        await user.save();
+
+        return res.status(200).json({ message: 'Course added successfully' });
+    } catch (err) {
+        return res.status(500).json({ message: 'Error processing enrollment' });
+    }
+});
+
+// get all the users 
 
 module.exports = router;
