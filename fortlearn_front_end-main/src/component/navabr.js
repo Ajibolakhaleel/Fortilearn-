@@ -23,9 +23,9 @@ function Navbar() {
                 <li class="nav-item"> 
                 <Link to="/resources" class="nav-link">Resources</Link> 
                 </li>
-                {/* <li class="nav-item">
-                <Link to="/user-profile" class="nav-link">Profile</Link> 
-                </li> */}
+                <li class="nav-item">
+                <Link to="/contact" class="nav-link">Contact Us</Link> 
+                </li>
                 {/* <li class="nav-item">
                 <Link to="/portal" class="nav-link">Portal</Link> 
                 </li> */}

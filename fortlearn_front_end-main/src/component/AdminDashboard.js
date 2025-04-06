@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { 
   BarChart, Bar, 
   PieChart, Pie, Cell, 
@@ -8,7 +10,7 @@ import {
 } from 'recharts';
 
 const UserDashboard = () => {
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState([]);
   const [resources, setResources] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('resources');
@@ -16,17 +18,14 @@ const UserDashboard = () => {
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d'];
 
   useEffect(() => {
-
       try {
         setLoading(true);
         
         fetch('http://localhost:3000/users')
         .then(response => response.json())
         .then((json) => {
-          console.log('data from the db',json)
           setUserData(json.result)}
-        )
-        .catch(error => console.error(error));
+        ).catch(error => console.error(error));
 
         // fetch user resources
         fetch('http://localhost:3000/resource/all')
@@ -34,15 +33,12 @@ const UserDashboard = () => {
         .then((json) => {
           console.log('data from the db',json)
           setResources(json.result)}
-        )
-        .catch(error => console.error(error));
+        ).catch(error => console.error(error));
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
         setLoading(false);
       }
-
-    
  
   }, []);
 
@@ -147,55 +143,111 @@ const UserDashboard = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-xl font-semibold">Loading dashboard...</div>
+      <div className="d-flex align-items-center justify-content-center vh-100">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+        <span className="ms-3 fs-5">Loading dashboard...</span>
       </div>
     );
   }
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800">User Dashboard</h1>
-        {userData && (
-          <div className="mt-2 text-gray-600">
-            Welcome, <span className="font-medium">{userData.username}</span> | Specialization: <span className="font-medium">{userData.specialisation}</span>
+    <div className="container-fluid p-5 bg-light min-vh-100">
+      <div className="d-flex justify-content-between align-items-center mb-4">
+          <h3 className="m-0">Welcome back, Professor { userData.username }</h3>
+          <div className="d-flex align-items-center">
+            {/* <button className="btn btn-outline-secondary btn-sm me-3">
+              <i className="fas fa-download me-1"></i> Download Report
+            </button> */}
+            {/* <div className="user-avatar">
+              <img src="/api/placeholder/40/40" alt="User" className="rounded-circle" />
+            </div> */}
           </div>
-        )}
-      </div>
+        </div>
+  
+        {/* Key Metrics */}
+        <div className="row mb-4">
+          <div className="col-md-3">
+            <div className="card border-0 shadow-sm">
+              <div className="card-body">
+                <div className="d-flex justify-content-between mb-2">
+                  <span className="text-muted small">Total Enrollments</span>
+                  <i className="fas fa-users text-primary"></i>
+                </div>
+                <h3 className="mb-1">{userData?.length}</h3>
+                <span className="badge bg-success small">+201% from last month</span>
+              </div>
+            </div>
+          </div>
+  
+          <div className="col-md-3">
+            <div className="card border-0 shadow-sm">
+              <div className="card-body">
+                <div className="d-flex justify-content-between mb-2">
+                  <span className="text-muted small">Course Completions</span>
+                  <i className="fas fa-graduation-cap text-info"></i>
+                </div>
+                <h3 className="mb-1">+{resources?.length}</h3>
+                <span className="badge bg-success small">+180.1% from last month</span>
+              </div>
+            </div>
+          </div>
+  
+          <div className="col-md-3">
+            <div className="card border-0 shadow-sm">
+              <div className="card-body">
+                <div className="d-flex justify-content-between mb-2">
+                  <span className="text-muted small">New Students</span>
+                  <i className="fas fa-user-plus text-warning"></i>
+                </div>
+                <h3 className="mb-1">+{userData?.length}</h3>
+                <span className="badge bg-success small">+19% from last month</span>
+              </div>
+            </div>
+          </div>
+  
+          <div className="col-md-3">
+            <div className="card border-0 shadow-sm">
+              <div className="card-body">
+                <div className="d-flex justify-content-between mb-2">
+                  <span className="text-muted small">Active Now</span>
+                  <i className="fas fa-circle text-success"></i>
+                </div>
+                <h3 className="mb-1">+{userData?.length}</h3>
+                <span className="badge bg-success small">+11 since last hour</span>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+
+      
 
       {/* Tabs Navigation */}
-      <div className="mb-6 border-b">
-        <div className="flex space-x-4">
+      <ul className="nav nav-tabs mb-4">
+        <li className="nav-item">
           <button 
-            className={`py-2 px-4 ${activeTab === 'resources' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500'}`}
+            className={`nav-link ${activeTab === 'resources' ? 'active' : ''}`}
             onClick={() => setActiveTab('resources')}
           >
             Resources
           </button>
-          <button 
-            className={`py-2 px-4 ${activeTab === 'enrollment' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500'}`}
-            onClick={() => setActiveTab('enrollment')}
-          >
-            Enrollment
-          </button>
-        </div>
-      </div>
+        </li>
+      </ul>
 
       {/* Dashboard Content */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Overview Tab */}
-      
-
-        {/* Resources Tab */}
+      <div className="row g-4">
         {activeTab === 'resources' && (
           <>
             {/* Resources by Category */}
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h2 className="text-xl font-semibold mb-4">Resources by Category</h2>
-              <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                  <Pie
+            <div className="col-12 col-md-6">
+              <div className="card shadow h-100">
+                <div className="card-body">
+                  <h2 className="card-title h5 mb-3">Resources by Category</h2>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                    <Pie
                     data={getCategoryDistribution()}
                     cx="50%"
                     cy="50%"
@@ -211,15 +263,19 @@ const UserDashboard = () => {
                   </Pie>
                   <Tooltip />
                   <Legend />
-                </PieChart>
-              </ResponsiveContainer>
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
             </div>
 
             {/* Resources by Type */}
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h2 className="text-xl font-semibold mb-4">Resources by Type</h2>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={getResourcesByType()}>
+            <div className="col-12 col-md-6">
+              <div className="card shadow h-100">
+                <div className="card-body">
+                  <h2 className="card-title h5 mb-3">Resources by Type</h2>
+                  <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={getResourcesByType()}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="name" />
                   <YAxis />
@@ -227,14 +283,18 @@ const UserDashboard = () => {
                   <Legend />
                   <Bar dataKey="count" fill="#8884d8" />
                 </BarChart>
-              </ResponsiveContainer>
+                  </ResponsiveContainer>
+                </div>
+              </div>
             </div>
 
             {/* Resources by Level */}
-            <div className="bg-white p-6 rounded-lg shadow md:col-span-2">
-              <h2 className="text-xl font-semibold mb-4">Resources by Level</h2>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={getResourcesByLevel()}>
+            <div className="col-12">
+              <div className="card shadow h-100">
+                <div className="card-body">
+                  <h2 className="card-title h5 mb-3">Resources by Level</h2>
+                  <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={getResourcesByLevel()}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="name" />
                   <YAxis />
@@ -242,71 +302,9 @@ const UserDashboard = () => {
                   <Legend />
                   <Bar dataKey="count" fill="#82ca9d" />
                 </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </>
-        )}
-
-        {/* Enrollment Tab */}
-        {activeTab === 'enrollment' && (
-          <>
-            {/* Resource Creation Timeline */}
-            <div className="bg-white p-6 rounded-lg shadow md:col-span-2">
-              <h2 className="text-xl font-semibold mb-4">Resource Creation Timeline</h2>
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={getResourceCreationTimeline()}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="date" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Line type="monotone" dataKey="count" stroke="#8884d8" activeDot={{ r: 8 }} />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-
-            {/* Enrolled Resources List */}
-            <div className="bg-white p-6 rounded-lg shadow md:col-span-2">
-              <h2 className="text-xl font-semibold mb-4">Your Enrolled Resources</h2>
-              {userData && userData?.enrolledResources.length || userData?.enrolledResources.length > 0 ? (
-                <div className="overflow-x-auto">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
-                      <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Level</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {userData.enrolledResources.map((resource, index) => (
-                        <tr key={index} className="hover:bg-gray-50">
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{resource.resource.title}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{resource.resource.type}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{resource.resource.category}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{resource.resource.levelClass}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            <a 
-                              href={resource.resource.resourceLink} 
-                              target="_blank" 
-                              rel="noopener noreferrer" 
-                              className="text-blue-600 hover:text-blue-800"
-                            >
-                              View
-                            </a>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                  </ResponsiveContainer>
                 </div>
-              ) : (
-                <div className="text-center py-4 text-gray-500">
-                  You haven't enrolled in any resources yet.
-                </div>
-              )}
+              </div>
             </div>
           </>
         )}

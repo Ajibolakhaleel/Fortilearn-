@@ -108,7 +108,7 @@ const Resourcespage = () => {
         return (
             <div className="row g-4">
                 {filteredResources.map(resource => (
-                    <div className="col-md-4" key={resource._id} onClick={() => window.open(resource.resourceLink || '#', '_blank')} style={{ cursor: 'pointer' }}>
+                    <div className="col-md-4" key={resource._id} onClick={() => window.location.href=`/resource/${resource._id}`} style={{ cursor: 'pointer' }}>
                         <div className="card resource-card h-100">
                             <div className="card-body">
                                 <div className="d-flex justify-content-between mb-3">

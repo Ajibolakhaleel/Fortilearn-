@@ -60,6 +60,7 @@ const ResourceDetailsPage = () => {
                 if (response.ok) {
                     // Handle success (e.g., show success message, update UI)
                     setIsEnrolled("Successfully Enrolled");
+                    navigate('/user-profile');
 
                     return data;
                 } else {
@@ -96,12 +97,12 @@ const ResourceDetailsPage = () => {
           </p>
           
           <Card className="mb-4">
-            <div className="bg-dark text-center p-5 position-relative" style={{ height: '400px' }}>
-              <div className="position-absolute top-50 start-50 translate-middle">
-                <FiPlayCircle size={60} color="white" />
-              </div>
+            <div className="bg-dark text-center p-3 position-relative" style={{ height: '400px' }}>
+            <iframe src="https://www.youtube.com/embed/3kcKoQXKAao" title="YouTube video" allowfullscreen class="rounded w-100 h-100"></iframe>
             </div>
           </Card>
+
+          
           
           {/* <Card className="mb-4">
             <Card.Header className="bg-white">

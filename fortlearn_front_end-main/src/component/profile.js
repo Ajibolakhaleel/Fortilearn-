@@ -128,7 +128,7 @@ const FortiLearnProfilePage = () => {
           <div className="card-body">
             <div className="d-flex justify-content-between align-items-center mb-3">
               <h4 className="mb-0" style={{color:'green'}}>Enrolled Resources</h4>
-              <ResourceSpecializationModal 
+              {/* <ResourceSpecializationModal 
                 trigger={
                   <button className="btn btn-success btn-sm d-flex align-items-center">
                     <i className="bi bi-plus me-1"></i> Add Resource Specialization
@@ -137,7 +137,7 @@ const FortiLearnProfilePage = () => {
                 onSave={(selectedResources) => {
                   setResources(prev => [...prev, ...selectedResources]);
                 }}
-              />
+              /> */}
             </div>
             <div className="row">
               {resources.map((resource, index) => (

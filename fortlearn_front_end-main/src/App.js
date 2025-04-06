@@ -13,6 +13,7 @@ import AdminPortal from './component/admin_portal';
 import { useState, useEffect } from 'react';
 import ResourceDetailsPage from './component/enrollment';
 import TermsPage from './component/term_and_conditions';
+import ContactUs from './component/contact';
 
 // ChatBot Component
 const ChatBot = () => {
@@ -213,6 +214,8 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/resources" element={<Resourcespage />} />
             <Route path="/terms" element={<TermsPage />} />
+            <Route path="/contact" element={<ContactUs />} />
+
 
             
             {/* Protected Routes */}

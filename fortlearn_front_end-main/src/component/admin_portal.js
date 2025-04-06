@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import AdminCoursesDashboard from './admin_resources';
 import UserDashboard from './AdminDashboard';
+import AdminUsersDashboard from './adminUsers';
 
 // Main Portal Component
 function AdminPortal() {
@@ -56,9 +57,12 @@ function AdminPortal() {
             <a href="#" className={`list-group-item list-group-item-action ${activeView === 'resources' ? 'active' : ''}`} onClick={() => handleNavClick('resources')}>
               <i className="fas fa-boxes me-2"></i> Resources
             </a>
-            <a href="#" className={`list-group-item list-group-item-action ${activeView === 'admins' ? 'active' : ''}`} onClick={() => handleNavClick('admins')}>
-              <i className="fas fa-boxes me-2"></i> analytics
+            <a href="#" className={`list-group-item list-group-item-action ${activeView === 'resources' ? 'active' : ''}`} onClick={() => handleNavClick('users')}>
+              <i className="fas fa-boxes me-2"></i> Users
             </a>
+            {/* <a href="#" className={`list-group-item list-group-item-action ${activeView === 'admins' ? 'active' : ''}`} onClick={() => handleNavClick('admins')}>
+              <i className="fas fa-boxes me-2"></i> analytics
+            </a> */}
             {/* <a href="#" className={`list-group-item list-group-item-action ${activeView === 'analytics' ? 'active' : ''}`} onClick={() => handleNavClick('analytics')}>
               <i className="fas fa-chart-bar me-2"></i> Analytics
             </a>
@@ -111,12 +115,11 @@ function AdminPortal() {
           
           {/* Render the appropriate view based on state */}
           <div className="p-2 p-md-4">
-            {activeView === 'dashboard' && <DashboardView />}
-            {activeView === 'resources' && <AdminCoursesDashboard />}
-            {activeView === 'admins' && <UserDashboard />}
-
-            {activeView === 'products' && <div>Products content goes here</div>}
-            {activeView === 'settings' && <div>Settings content goes here</div>}
+            {activeView === 'dashboard' && <UserDashboard />}
+            {activeView === 'resources' && <AdminCoursesDashboard />} 
+            {activeView === 'users' && <AdminUsersDashboard />}
+            {/* {activeView === 'products' && <div>Products content goes here</div>}
+            {activeView === 'settings' && <div>Settings content goes here</div>} */}
           </div>
         </div>
       </div>

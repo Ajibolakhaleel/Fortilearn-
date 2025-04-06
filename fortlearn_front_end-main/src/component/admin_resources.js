@@ -15,7 +15,17 @@ const AdminCoursesDashboard = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [recordsPerPage] = useState(7);
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [newResource, setNewResource] = useState({
+    title: '',
+    description: '',
+    category: '',
+    levelClass: '',
+    type: '',
+    resourceLink: ''
+  });
+  const [updateResource, setUpdateResource] = useState({
+    _id: '',
     title: '',
     description: '',
     category: '',
@@ -26,30 +36,65 @@ const AdminCoursesDashboard = () => {
   const [formSubmitting, setFormSubmitting] = useState(false);
   const [formError, setFormError] = useState(null);
   const [formSuccess, setFormSuccess] = useState(false);
+  const [updateFormSubmitting, setUpdateFormSubmitting] = useState(false);
+  const [updateFormError, setUpdateFormError] = useState(null);
+  const [updateFormSuccess, setUpdateFormSuccess] = useState(false);
   
   // Fetch data from the API endpoint
-  useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch('http://127.0.0.1:3000/resource/all');
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        setInitialCourses(data.result);
-        setCourses(data.result);
-        setLoading(false);
-      } catch (err) {
-        setError(`Failed to fetch courses: ${err.message}`);
-        setLoading(false);
+  const fetchCourses = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch('http://127.0.0.1:3000/resource/all');
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
       }
-    };
-
+      
+      const data = await response.json();
+      setInitialCourses(data.result);
+      setCourses(data.result);
+      setLoading(false);
+    } catch (err) {
+      setError(`Failed to fetch courses: ${err.message}`);
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
     fetchCourses();
-  }, [formSuccess]);
+  }, [formSuccess, updateFormSuccess]);
+
+  // Delete course function
+  const deleteCourse = async (id) => {
+    try {
+       await fetch(`http://localhost:3000/resource/${id}`, {
+        method: 'DELETE',
+      
+      }).then((response) => {   
+        fetchCourses()
+          console.error('Error deleting resource:', response);
+  
+      })
+    } catch (error) {
+      console.error('Error deleting resource:', error);
+      setError('Failed to delete resource. Please try again later.');
+      }
+  }
+
+  // Update course function - opens the modal with resource data
+  const openUpdateForm = (course) => {
+    setUpdateResource({
+      _id: course._id,
+      title: course.title,
+      description: course.description,
+      category: course.category,
+      levelClass: course.levelClass,
+      type: course.type,
+      resourceLink: course.resourceLink
+    });
+    setUpdateFormError(null);
+    setUpdateFormSuccess(false);
+    setShowUpdateForm(true);
+  };
 
   // Get unique categories, types and levels for filters
   const categories = [...new Set(initialCourses.map(course => course.category))];
@@ -142,6 +187,17 @@ const AdminCoursesDashboard = () => {
     if (formError) setFormError(null);
   };
 
+  // Handle update resource form input changes
+  const handleUpdateFormChange = (e) => {
+    const { name, value } = e.target;
+    setUpdateResource({
+      ...updateResource,
+      [name]: value
+    });
+    // Clear form error when user changes input
+    if (updateFormError) setUpdateFormError(null);
+  };
+
   // Set sample data for quick testing
   const setSampleData = () => {
     setNewResource({
@@ -154,7 +210,7 @@ const AdminCoursesDashboard = () => {
     });
   };
 
-  // Handle form submission
+  // Handle form submission for new resource
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFormSubmitting(true);
@@ -199,6 +255,47 @@ const AdminCoursesDashboard = () => {
       setFormError(`Failed to create resource: ${error.message}`);
     } finally {
       setFormSubmitting(false);
+    }
+  };
+
+  // Handle form submission for update resource
+  const handleUpdateSubmit = async (e) => {
+    e.preventDefault();
+    setUpdateFormSubmitting(true);
+    setUpdateFormError(null);
+    
+    try {
+      const response = await fetch(`http://127.0.0.1:3000/resource/${updateResource._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updateResource)
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || `Server responded with status code: ${response.status}`);
+      }
+      
+      await response.json();
+      
+      // Show success state
+      setUpdateFormSuccess(true);
+      
+      // Refresh the courses list
+      fetchCourses();
+      
+      // Close form after short delay to show success message
+      setTimeout(() => {
+        setShowUpdateForm(false);
+        setUpdateFormSuccess(false);
+      }, 1500);
+      
+    } catch (error) {
+      setUpdateFormError(`Failed to update resource: ${error.message}`);
+    } finally {
+      setUpdateFormSubmitting(false);
     }
   };
 
@@ -425,6 +522,177 @@ const AdminCoursesDashboard = () => {
                 </div>
               )}
               
+              {/* Update Resource Form Modal */}
+              {showUpdateForm && (
+                <div className="modal d-block" tabIndex="-1" style={{backgroundColor: 'rgba(0,0,0,0.5)'}}>
+                  <div className="modal-dialog modal-lg">
+                    <div className="modal-content">
+                      <div className="modal-header">
+                        <h5 className="modal-title">Update Resource</h5>
+                        <button 
+                          type="button" 
+                          className="btn-close" 
+                          onClick={() => setShowUpdateForm(false)}
+                          disabled={updateFormSubmitting}
+                        ></button>
+                      </div>
+                      <div className="modal-body">
+                        {updateFormError && (
+                          <div className="alert alert-danger" role="alert">
+                            <i className="fas fa-exclamation-triangle me-2"></i>
+                            {updateFormError}
+                          </div>
+                        )}
+                        
+                        {updateFormSuccess && (
+                          <div className="alert alert-success" role="alert">
+                            <i className="fas fa-check-circle me-2"></i>
+                            Resource updated successfully!
+                          </div>
+                        )}
+                        
+                        <form onSubmit={handleUpdateSubmit}>
+                          <div className="mb-3">
+                            <label htmlFor="updateTitle" className="form-label">Title</label>
+                            <input 
+                              type="text" 
+                              className="form-control" 
+                              id="updateTitle" 
+                              name="title"
+                              value={updateResource.title}
+                              onChange={handleUpdateFormChange}
+                              required
+                              disabled={updateFormSubmitting}
+                            />
+                          </div>
+                          
+                          <div className="mb-3">
+                            <label htmlFor="updateDescription" className="form-label">Description</label>
+                            <textarea 
+                              className="form-control" 
+                              id="updateDescription" 
+                              name="description"
+                              value={updateResource.description}
+                              onChange={handleUpdateFormChange}
+                              rows="3"
+                              required
+                              disabled={updateFormSubmitting}
+                            ></textarea>
+                          </div>
+                          
+                          <div className="row mb-3">
+                            <div className="col-md-6">
+                              <label htmlFor="updateCategory" className="form-label">Category</label>
+                              <select 
+                                className="form-select" 
+                                id="updateCategory" 
+                                name="category"
+                                value={updateResource.category}
+                                onChange={handleUpdateFormChange}
+                                required
+                                disabled={updateFormSubmitting}
+                              >
+                                <option value="">Select Category</option>
+                                {categories.map(cat => (
+                                  <option key={cat} value={cat}>{cat}</option>
+                                ))}
+                                <option value="Hacking">Hacking</option>
+                                <option value="new">+ Add New Category</option>
+                              </select>
+                            </div>
+                            
+                            <div className="col-md-6">
+                              <label htmlFor="updateLevelClass" className="form-label">Level</label>
+                              <select 
+                                className="form-select" 
+                                id="updateLevelClass" 
+                                name="levelClass"
+                                value={updateResource.levelClass}
+                                onChange={handleUpdateFormChange}
+                                required
+                                disabled={updateFormSubmitting}
+                              >
+                                <option value="">Select Level</option>
+                                <option value="beginner">Beginner</option>
+                                <option value="intermediate">Intermediate</option>
+                                <option value="advanced">Advanced</option>
+                              </select>
+                            </div>
+                          </div>
+                          
+                          <div className="mb-3">
+                            <label htmlFor="updateType" className="form-label">Resource Type</label>
+                            <select 
+                              className="form-select" 
+                              id="updateType" 
+                              name="type"
+                              value={updateResource.type}
+                              onChange={handleUpdateFormChange}
+                              required
+                              disabled={updateFormSubmitting}
+                            >
+                              <option value="">Select Type</option>
+                              {types.length > 0 && types.map(type => (
+                                <option key={type} value={type}>{type}</option>
+                              ))}
+                              <option value="Video course">Video course</option>
+                              <option value="Tutorial">Tutorial</option>
+                              <option value="Documentation">Documentation</option>
+                              <option value="Article">Article</option>
+                              <option value="Book">Book</option>
+                              <option value="Tool">Tool</option>
+                            </select>
+                          </div>
+                          
+                          <div className="mb-3">
+                            <label htmlFor="updateResourceLink" className="form-label">Resource URL</label>
+                            <input 
+                              type="url" 
+                              className="form-control" 
+                              id="updateResourceLink" 
+                              name="resourceLink"
+                              value={updateResource.resourceLink}
+                              onChange={handleUpdateFormChange}
+                              placeholder="https://example.com"
+                              required
+                              disabled={updateFormSubmitting}
+                            />
+                          </div>
+                          
+                          <div className="modal-footer">
+                            <button 
+                              type="button" 
+                              className="btn btn-outline-secondary me-2" 
+                              onClick={() => setShowUpdateForm(false)}
+                              disabled={updateFormSubmitting}
+                            >
+                              Cancel
+                            </button>
+                            <button 
+                              type="submit" 
+                              className="btn btn-primary"
+                              disabled={updateFormSubmitting}
+                            >
+                              {updateFormSubmitting ? (
+                                <>
+                                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                  Updating...
+                                </>
+                              ) : (
+                                <>
+                                  <i className="fas fa-save me-2"></i>
+                                  Update Resource
+                                </>
+                              )}
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
               {/* Search and Filters */}
               <div className="row mb-4 g-3">
                 <div className="col-md-6">
@@ -536,12 +804,14 @@ const AdminCoursesDashboard = () => {
                               <button 
                                 className="btn btn-outline-success"
                                 title="Edit course"
+                                onClick={() => openUpdateForm(course)}
                               >
                                 <i className="fas fa-edit"></i>
                               </button>
                               <button 
                                 className="btn btn-outline-danger"
                                 title="Delete course"
+                                onClick={()=> deleteCourse(course._id)}
                               >
                                 <i className="fas fa-trash-alt"></i>
                               </button>
@@ -611,7 +881,7 @@ const AdminCoursesDashboard = () => {
                     
                     <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
                       <a 
-                        className="page-link" 
+                        className = "page-link" 
                         href="#"
                         onClick={(e) => {
                           e.preventDefault();
