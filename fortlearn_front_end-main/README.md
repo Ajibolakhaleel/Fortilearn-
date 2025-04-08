@@ -1,70 +1,206 @@
-# Getting Started with Create React App
+Here’s your updated and cleaned-up `README.md`, with the necessary backend and frontend instructions incorporated, redundant info trimmed, and formatting made consistent and professional:
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+---
 
-## Available Scripts
+# FortiLearn
 
-In the project directory, you can run:
+## 🛡️ Description
 
-### `npm start`
+**FortiLearn** is an interactive web platform designed to democratize cybersecurity education through hands-on learning. It serves as a one-stop hub for curated cybersecurity resources, including books, articles, learning paths, and interactive tools.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+> 🔗 [GitHub Repository](https://github.com/Ajibolakhaleel/Fortilearn-)  
+> 🎨 [Design Preview](https://uxpilot.ai/s/c5945ee813ea4164dc76cfe17f4f1ad5)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## ⚙️ Full Project Setup
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 1. Install All Updates
 
-### `npm run build`
+Make sure your system is up-to-date before proceeding.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 2. Frontend Setup (`fortlearn_frontend_main`)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+cd fortlearn_frontend_main
+npm install
+npm start
+```
 
-### `npm run eject`
+This will start the React development server. You can now access the frontend at `http://localhost:3000` (or the port specified in your `.env` file).
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 3. Backend Setup (`fortlearnAPI-main`)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+cd fortlearnAPI-main
+npm install
+npm start
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+This runs the backend server. Ensure any required `.env` variables or MongoDB connections are configured if applicable.
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 📁 Project Structure
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+FortiLearn/
+├── fortlearn_frontend_main/
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Navigation/
+│   │   │   ├── ResourceCard/
+│   │   │   ├── Features/
+│   │   │   └── Footer/
+│   │   ├── pages/
+│   │   ├── assets/
+│   │   └── App.js
+│   └── package.json
+├── fortlearnAPI-main/
+│   ├── controllers/
+│   ├── models/
+│   ├── routes/
+│   └── server.js
+```
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 🧩 Component Overview
 
-### Analyzing the Bundle Size
+### 🔹 Navigation
+- Responsive navbar
+- Auth buttons
+- Dynamic links
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### 🔹 Resource Cards
+- Info display with tags
+- Difficulty badges
+- Quick links
 
-### Making a Progressive Web App
+### 🔹 Features Section
+- Structured learning
+- Community support
+- AI-powered help
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### 🔹 Footer
+- Quick links
+- Social media
+- Newsletter
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## 🎨 Styling & Customization
 
-### Deployment
+FortiLearn uses Bootstrap 5. You can customize components via:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- Bootstrap variables
+- Utility classes
+- Custom CSS overrides
 
-### `npm run build` fails to minify
+Icons are provided by [Lucide React](https://lucide.dev/).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+## 👨‍💻 Development Tools
+
+Recommended VS Code Extensions:
+
+- ES7+ React Snippets
+- Prettier
+- ESLint
+- GitLens
+
+Editor Settings:
+```json
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.tabSize": 2
+}
+```
+
+---
+
+## ✅ Testing Setup
+
+Install testing libraries:
+
+```bash
+npm install --save-dev @testing-library/react @testing-library/jest-dom
+```
+
+Create test files:
+
+```bash
+touch src/components/Navigation/Navbar.test.js
+touch src/components/ResourceCard/ResourceCard.test.js
+```
+
+---
+
+## 🔧 Troubleshooting
+
+- **Port in Use**
+  ```bash
+  lsof -i :3000
+  kill -9 <PID>
+  ```
+
+- **Fix Dependency Issues**
+  ```bash
+  rm -rf node_modules
+  npm cache clean --force
+  npm install
+  ```
+
+- **Node Version**
+  ```bash
+  nvm install node
+  nvm use node
+  ```
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repo  
+2. Create a branch: `git checkout -b feature/YourFeature`  
+3. Commit your changes  
+4. Push and open a pull request
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE.md).
+
+---
+
+## 🙏 Acknowledgments
+
+- Bootstrap  
+- Lucide React  
+- Cybersecurity community for curated learning materials  
+
+---
+
+## 📞 Contact
+
+- Email: support@fortilearn.com  
+- Twitter: [@FortiLearn](https://twitter.com/FortiLearn)  
+- LinkedIn: [FortiLearn](https://linkedin.com/company/fortilearn)
+
+---
+
+## 🔄 Version History
+
+- **v1.0.0** – Initial release  
+- **v1.1.0** – AI-powered assistance and improved search added
+
+---
+
